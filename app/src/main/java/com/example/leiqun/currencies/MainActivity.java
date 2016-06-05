@@ -28,6 +28,9 @@ public class MainActivity extends ActionBarActivity implements AdapterView.OnIte
     private Spinner mForSpinner,mHomSpinner;
     private String[] mCurrencies;
 
+    public static final String FOR = "FOR_CURRENCY";
+    public static final String HOM = "HOM_CURRENCY";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,6 +66,16 @@ public class MainActivity extends ActionBarActivity implements AdapterView.OnIte
 
         mHomSpinner.setOnItemSelectedListener(this);
         mForSpinner.setOnItemSelectedListener(this);
+
+        if (savedInstanceState == null
+                && PrefsMgr.grtString(this,FOR) == null
+                && PrefsMgr.grtString(this,HOM) == null) {
+            mForSpinner.setSelection(findPositionGivenCode("CNY",mCurrencies));
+            mHomSpinner.setSelection(findPositionGivenCode("USD",mCurrencies));
+        } else {
+            mForSpinner.setSelection(findPositionGivenCode(PrefsMgr.grtString(this,FOR),mCurrencies));
+            mHomSpinner.setSelection(findPositionGivenCode(PrefsMgr.grtString(this,HOM),mCurrencies));
+        }
     }
 
     private int findPositionGivenCode(String code,String[] currencies) {
@@ -109,6 +122,9 @@ public class MainActivity extends ActionBarActivity implements AdapterView.OnIte
         mForSpinner.setSelection(nHom);
         mHomSpinner.setSelection(nFor);
         mConvertedTextView.setText("");
+
+        PrefsMgr.setString(this,FOR,extractCodeFromCurrency((String) mForSpinner.getSelectedItem()));
+        PrefsMgr.setString(this,HOM,extractCodeFromCurrency((String) mHomSpinner.getSelectedItem()));
     }
 
     @Override
@@ -144,13 +160,11 @@ public class MainActivity extends ActionBarActivity implements AdapterView.OnIte
         switch (parent.getId()) {
 
             case R.id.spn_for:
-
+                PrefsMgr.setString(this,FOR,extractCodeFromCurrency((String) mForSpinner.getSelectedItem()));
                 break;
-
             case R.id.spn_hom:
-
+                PrefsMgr.setString(this,HOM,extractCodeFromCurrency((String) mHomSpinner.getSelectedItem()));
                 break;
-
             default:
                 break;
         }
