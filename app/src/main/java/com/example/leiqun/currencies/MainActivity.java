@@ -2,11 +2,13 @@ package com.example.leiqun.currencies;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.AssetManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -17,8 +19,12 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Properties;
 
 public class MainActivity extends ActionBarActivity implements AdapterView.OnItemSelectedListener{
 
@@ -30,6 +36,11 @@ public class MainActivity extends ActionBarActivity implements AdapterView.OnIte
 
     public static final String FOR = "FOR_CURRENCY";
     public static final String HOM = "HOM_CURRENCY";
+
+    private String mKey;
+    public static final String RATES = "rates";
+    public static final String URL_BASE = "https://openexchangerates.org/api/latest.json?app_id=";
+    private static final DecimalFormat DECIMAL_FORMAL = new DecimalFormat("#,##0.00000");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,6 +94,21 @@ public class MainActivity extends ActionBarActivity implements AdapterView.OnIte
 
             }
         });
+
+        mKey = getKey("open_key");
+    }
+
+    private String getKey(String keyName){
+        AssetManager assetManager = this.getResources().getAssets();
+        Properties properties = new Properties();
+        try {
+            InputStream inputStream = assetManager.open("keys.properties");
+            properties.load(inputStream);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return properties.getProperty(keyName);
+
     }
 
     private int findPositionGivenCode(String code,String[] currencies) {
