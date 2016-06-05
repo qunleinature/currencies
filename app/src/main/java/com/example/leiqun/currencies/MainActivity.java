@@ -76,6 +76,13 @@ public class MainActivity extends ActionBarActivity implements AdapterView.OnIte
             mForSpinner.setSelection(findPositionGivenCode(PrefsMgr.grtString(this,FOR),mCurrencies));
             mHomSpinner.setSelection(findPositionGivenCode(PrefsMgr.grtString(this,HOM),mCurrencies));
         }
+
+        mCalcButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
     }
 
     private int findPositionGivenCode(String code,String[] currencies) {
