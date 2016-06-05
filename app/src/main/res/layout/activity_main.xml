@@ -103,10 +103,11 @@
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
-            android:background="@color/grey_med_dark"
+            android:background="@drawable/button_selector"
             android:gravity="center_vertical"
             android:textSize="30sp"
-            android:typeface="normal"/>
+            android:typeface="normal"
+            android:textColor="@color/white"/>
     </LinearLayout>
 
 </LinearLayout>
