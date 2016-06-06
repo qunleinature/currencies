@@ -86,6 +86,6 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
     }
 
     public void testFloat() throws Throwable {
-        proxyCurrencyConverterTask("12..3");
+        proxyCurrencyConverterTask("12.3");
     }
 }
