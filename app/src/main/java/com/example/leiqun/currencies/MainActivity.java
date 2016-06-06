@@ -12,7 +12,6 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
-import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -49,6 +48,16 @@ public class MainActivity extends ActionBarActivity implements AdapterView.OnIte
     public static final String RATES = "rates";
     public static final String URL_BASE = "https://openexchangerates.org/api/latest.json?app_id=";
     private static final DecimalFormat DECIMAL_FORMAT = new DecimalFormat("#,##0.00000");
+
+    private CurrencyTaskCallback mCurrencyTaskCallback;
+
+    public static interface CurrencyTaskCallback {
+        void executionDone();
+    }
+
+    public void setCurrencyTaskCallback(CurrencyTaskCallback currencyTaskCallback) {
+        this.mCurrencyTaskCallback = currencyTaskCallback;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -287,6 +296,9 @@ public class MainActivity extends ActionBarActivity implements AdapterView.OnIte
             mConvertedTextView.setText(DECIMAL_FORMAT.format(dCalculated) + " " + strHomCode);
             progressDialog.dismiss();
 
+            if (mCurrencyTaskCallback != null) {
+                mCurrencyTaskCallback.executionDone();
+            }
         }
     }
 }
