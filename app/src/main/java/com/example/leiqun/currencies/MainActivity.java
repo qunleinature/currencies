@@ -59,6 +59,17 @@ public class MainActivity extends ActionBarActivity implements AdapterView.OnIte
         this.mCurrencyTaskCallback = currencyTaskCallback;
     }
 
+    public static boolean isNumeric(String str)
+    {
+        try{
+            double dub = Double.parseDouble(str);
+        }
+        catch(NumberFormatException nfe) {
+            return false;
+        }
+        return true;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -112,7 +123,12 @@ public class MainActivity extends ActionBarActivity implements AdapterView.OnIte
         mCalcButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new CurrencyConverterTask().execute(URL_BASE+mKey);
+                if (isNumeric(String.valueOf(mAmountEditText.getText()))) {
+                    new CurrencyConverterTask().execute(URL_BASE+mKey);
+                }
+                else {
+                    Toast.makeText(MainActivity.this,"输入的不是数值，重新输入！",Toast.LENGTH_LONG).show();
+                }
             }
         });
 
